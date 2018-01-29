@@ -1,0 +1,27 @@
+<div class="table-responsive">          
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Id</th>
+        <th>Task Name</th>
+        <th>Task Detail</th>
+        <th>Task Owner</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let eachTask of taskService.taskList;let i=index">
+        <td>{{eachTask.taskId}}</td>
+        <td>{{eachTask.taskName}}</td>
+        <td>{{eachTask.taskDetail}}</td>
+        <td>{{eachTask.taskOwner}}</td>
+        <td>{{eachTask.status}}</td>
+        <td>
+          <button type="submit" class="btn btn-primary custom" (click)="updateTask(eachTask,i)">Update</button> |
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  </div>

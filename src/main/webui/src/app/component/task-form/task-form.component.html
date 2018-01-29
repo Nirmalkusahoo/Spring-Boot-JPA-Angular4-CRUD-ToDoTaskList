@@ -1,0 +1,56 @@
+<!-- Task form -->
+
+<div class="container">
+  
+ <form #taskForm="ngForm" class="form-inline" ngNativeValidate >
+
+   <fieldset class="scheduler-border">
+     <legend class="scheduler-border"><h1 style="color: greenyellow">Create Task</h1></legend>
+
+     <div *ngIf="taskService.alertMessage" class="alert alert-success alert-dismissable">
+      <a href="#" class="close" (click)="this.taskService.alertMessage = !this.taskService.alertMessage" data-dismiss="alert" aria-label="close">×</a>
+      <strong>{{taskService.message}}</strong>
+    </div>
+
+  <div class="row">
+    <div class="col-md-4">
+        <!--<label for="taskName">Task Name:</label>-->
+        <input type="text" class="form-control" [(ngModel)]="taskObj.taskName" #tName="ngModel" id="taskName" placeholder="Enter Task Name" name="taskName" required>
+        <span class="help-block" *ngIf="!tName.valid && tName.touched">Please Enter Task Name</span>
+    </div>
+    <div class="col-md-4">
+        <!--<label for="taskDetail">Task Detail:</label>-->
+        <input type="text" class="form-control" [(ngModel)]="taskObj.taskDetail" #taskDetail="ngModel" id="taskDetail" placeholder="Enter Task Detail" name="taskDetail">
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col-md-4">
+        <!--<label for="taskOwner">Task Owner:</label>-->
+        <input type="text" class="form-control"  #taskOwner="ngModel" [(ngModel)]="taskObj.taskOwner" id="taskOwner" [ngModelOptions]="{standalone: true}" placeholder="Mention Task Owner" name="taskOwner">
+    </div>
+    <div class="col-md-4">
+          <!--<label for="status">Status:</label>-->
+          <select class="selectpicker form-control sel-btn" [(ngModel)]="taskObj.status" name="status">
+            <option value='Not Started'>Not Started</option>
+            <option value='In Progress'>In Progress</option>
+            <option value='Completed'>Completed</option>
+          </select>
+    </div>
+    <div class="col-md-4" >
+      <button type="submit" class="btn btn-primary sub-btn"  (click)="submit(taskObj)">Submit</button>
+    </div>
+  </div>
+  
+   </fieldset>
+  </form>
+ <button type="submit" class="btn btn-primary custom "  (click)="showList=!showList ; showTaskList(); taskListButton=!taskListButton">{{taskListButton ==true ? 'Show Task List' :'Hide Task List '}}</button>
+ 
+
+
+  <fieldset class="scheduler-border" *ngIf="showList">
+      <legend class="scheduler-border"><h1 style="color: greenyellow"> List of Task </h1></legend>
+    <task-list></task-list>
+  </fieldset>
+
+</div>
+
