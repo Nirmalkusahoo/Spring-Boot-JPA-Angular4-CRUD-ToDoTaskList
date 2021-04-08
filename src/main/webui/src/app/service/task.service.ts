@@ -35,7 +35,6 @@ export class TaskService {
 
   public getTaskList(): Observable<any> {
     return this.http.get('/task/listTask').pipe(
-      map((reposne: Response) => reposne.json()),
       catchError((error: Response) => {
         return observableThrowError(error);
       })

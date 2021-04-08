@@ -51,7 +51,7 @@ export class TaskFormComponent implements OnInit {
       () => {}
     );
   }
-  public showTaskList(): void{
+  public showTaskList(): void {
     this.taskService.getTaskList().subscribe(
       (data) => {
         this.taskList = data;
