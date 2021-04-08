@@ -1,27 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 
-
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskListComponent } from './component/task-list/task-list.component';
-import { TaskService } from "./service/task.service";
 import { TaskFormComponent } from './component/task-form/task-form.component';
-import { HttpModule } from "@angular/http";
-
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TaskListComponent,
-    TaskFormComponent
-  ],
+  declarations: [AppComponent, TaskListComponent, TaskFormComponent],
   imports: [
     BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
     FormsModule,
-    HttpModule
+    CommonModule,
   ],
-  providers: [TaskService],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

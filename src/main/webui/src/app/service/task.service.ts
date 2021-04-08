@@ -1,93 +1,71 @@
-import { Injectable,EventEmitter } from '@angular/core';
-import { TaskModel } from "../model/taskModel";
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { throwError as observableThrowError, Observable } from 'rxjs';
 
+import { catchError, map } from 'rxjs/operators';
+import { Injectable, EventEmitter } from '@angular/core';
+import { TaskModel } from '../model/taskModel';
+import { HttpClient } from '@angular/common/http';
 
-
-
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TaskService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http:Http) { }
-
-  taskList:TaskModel[]=[];
-  editTask=new EventEmitter<TaskModel>();
-  index:number;
-  message:string;
-  alertMessage:boolean=false;
-
-  postDefaultData(){
-    return this.http.post('/task/defaultData',this.defaultTask)
-      .map(
-        (response:Response)=>{
-          response.json();
-          this.taskList.push(response.json());
-
-        }
-      )
-      .catch(
-        (error:Response)=>{
-          return Observable.throw(error)
-        }
-      )
+  public taskList: TaskModel[] = [];
+  public editTask = new EventEmitter<TaskModel>();
+  public index: number;
+  public message: string;
+  public alertMessage: boolean = false;
+  public defaultTask: TaskModel = {
+    taskName: 'CRUD Frontend Application',
+    taskDetail: 'Make Sample Angular Application',
+    taskOwner: 'Nirmal Sahoo',
+    status: 'Completed',
+  };
+  public postDefaultData(): Observable<any> {
+    return this.http.post('/task/defaultData', this.defaultTask).pipe(
+      map((response: TaskModel) => {
+        this.taskList.push(response);
+      }),
+      catchError((error: Response) => {
+        return observableThrowError(error);
+      })
+    );
   }
 
-  getTaskList(){
-    return this.http.get('/task/listTask')
-      .map(
-        (reposne:Response)=>reposne.json()
-      )
-      .catch(
-        (error:Response)=>{
-          return Observable.throw(error)
-        }
-      )
+  public getTaskList(): Observable<any> {
+    return this.http.get('/task/listTask').pipe(
+      map((reposne: Response) => reposne.json()),
+      catchError((error: Response) => {
+        return observableThrowError(error);
+      })
+    );
   }
 
-  saveTask(task:TaskModel){
-    return this.http.post('/task/save',task)
-      .map(
-        (reposne:Response)=>reposne.json()
-      ).
-      catch(
-        (error:Response)=>{
-          return Observable.throw(error);
-        }
-      )
+  public saveTask(task: TaskModel): Observable<any> {
+    return this.http.post('/task/save', task);
   }
-
-   defaultTask:TaskModel=
-   { 
-    taskName: "CRUD Frontend Application",
-    taskDetail: "Make Sample Angular Application",
-    taskOwner: "Nirmal Sahoo",
-    status: "Completed"
-   }
 
   /*taskList:TaskModel=
-   { 
+   {
     // taskId: 6753,
     taskName: "CRUD Frontend Application",
     taskDetail: "Make Sample Angular Application",
     taskOwner: "Nirmal Sahoo",
     status: "Complete"
    },
-   { 
+   {
     taskId: 7845,
     taskName: "CRUD BackEnd Application",
     taskDetail: "Make Sample Spring boot  Application",
     taskOwner: "Nirmal Sahoo",
     status: "In Progress"
    },
-   { 
+   {
     taskId: 6753,
     taskName: "CRUD Angular And Spring Boot Application",
     taskDetail: "Make Sample Angular +Spring Boot Application",
     taskOwner: "Nirmal Sahoo",
     status: "Not Started"
    },*/
-  
 }
